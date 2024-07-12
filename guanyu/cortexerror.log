@@ -1,0 +1,17 @@
+
+Error [cortex] [time 7/11/24 13:29:1] Cortex received a fatal signal (unrecognized signal).
+1000000: fluent(CX_Primitive_Error+0x225) [0x7da3c5]
+1000000: fluent() [0x7db10f]
+1000000: /lib64/libc.so.6(+0x4eb20) [0x7f5e91e54b20]
+1000000: /lib64/libc.so.6(gsignal+0x10f) [0x7f5e91e54a9f]
+1000000: /lib64/libc.so.6(abort+0x127) [0x7f5e91e27e05]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(+0x8b833) [0x7f5e927f0833]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(+0x919a6) [0x7f5e927f69a6]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(+0x919e1) [0x7f5e927f69e1]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(+0x91c13) [0x7f5e927f6c13]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(+0x8d683) [0x7f5e927f2683]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(+0xd16a9) [0x7f5e928366a9]
+1000000: /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/syslib/libstdc++.so.6(_ZNSsC1EPKcRKSaIcE+0x30) [0x7f5e92836a40]
+1000000: fluent(CX_Read_Case_Info+0x14e) [0xad12de]
+1000000: fluent() [0x8968c1]
+1000000: fluent(eval+0x95a) [0x907b3a]

@@ -1,0 +1,8 @@
+Currently Loaded Modulefiles:
+ 1) gcc/9.4.0(default)   2) matlab/R2023b  
+SCRATCH is /scratch/ems006/jxu/test1.m/459767
+the results directory is /group/ems006/jxu/test1_results/459767
+/var/spool/slurmd/job459767/slurm_script: line 54: ${OUTPUT}: ambiguous redirect
+mv: missing destination file operand after '/group/ems006/jxu/test1_results/459767'
+Try 'mv --help' for more information.
+test1_jxu job finished at Tue Jul 9 13:32:43 AWST 2024

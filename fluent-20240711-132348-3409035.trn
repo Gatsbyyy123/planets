@@ -1,0 +1,63 @@
+Auto-Transcript Start Time:  13:23:48, 11 Jul 2024 
+Current Directory: "/home/jxu/planets"
+/uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/bin/fluent -r23.1.0 2ddp -pshmem -host -t1 -mpi=intel -path/uwahpc/centos8/apps/ansys/2023/v231/fluent -ssh -cx n028.hpc.uwa.edu.au:42039:36273
+Starting /uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/2ddp_host/fluent.23.1.0 host -cx n028.hpc.uwa.edu.au:42039:36273 "(list (rpsetvar (QUOTE parallel/function) "fluent 2ddp -flux -node -r23.1.0 -t1 -pshmem -mpi=intel -ssh") (rpsetvar (QUOTE parallel/rhost) "") (rpsetvar (QUOTE parallel/ruser) "") (rpsetvar (QUOTE parallel/nprocs_string) "1") (rpsetvar (QUOTE parallel/auto-spawn?) #t) (rpsetvar (QUOTE parallel/trace-level) 0) (rpsetvar (QUOTE parallel/remote-shell) 1) (rpsetvar (QUOTE parallel/path) "/uwahpc/centos8/apps/ansys/2023/v231/fluent") (rpsetvar (QUOTE parallel/hostsfile) "") (rpsetvar (QUOTE gpuapp/devices) ""))"
+/uwahpc/centos8/apps/ansys/2023/v231/fluent/fluent23.1.0/lnamd64/2ddp_host/fluent.23.1.0: error while loading shared libraries: libifcore.so.5: cannot open shared object file: No such file or directory
+ The fluent process could not be started.
+
+Error: There is no active application.
+Error Object: (rp-var-value 'gpuapp/allow-parametric-study?)
+
+version> (cx-gui-do cx-activate-item "Error*OK")
+
+Error: There is no active application.
+Error Object: (rp-var-value 'gpuapp/allow-parametric-study?)
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*WriteSubMenu*Case & Data...")
+
+Error: There is no active application.
+Error Object: (fluent-arch)
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*ReadSubMenu*Case & Data...")
+(cx-gui-do cx-set-file-dialog-entries "Select File" '( "/home/jxu/planets/guanyu/&c0.14921mps-923.15k.cas.h5") "CFF Case Files (*.cas.h5 )")
+
+Error: There is no active application.
+Error Object: (%open-hdfio-library)
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*WriteSubMenu*Case & Data...")
+
+Error: There is no active application.
+Error Object: (fluent-arch)
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*ReadSubMenu*Case & Data...")
+(cx-gui-do cx-set-file-dialog-entries "Select File" '( "&c0.14921mps-923.15k.cas.h5") "CFF Case Files (*.cas.h5 )")
+
+Error: There is no active application.
+Error Object: (%open-hdfio-library)
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*ReadSubMenu*Case & Data...")
+(cx-gui-do cx-set-file-dialog-entries "Select File" '( "&c0.14921mps-923.15k.cas.h5") "CFF Case Files (*.cas.h5 )")
+
+Error: There is no active application.
+Error Object: (%open-hdfio-library)
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*ReadSubMenu*Case/Mesh Info...")
+(cx-gui-do cx-set-file-dialog-entries "Select File" '( "&c0.14921mps-923.15k.cas.h5") "All Case Files (*.cas.h5 )")
+
+Error: There is no active application.
+Error Object: (%case-file-info? "/home/jxu/planets/guanyu/&c0.14921mps-923.15k.cas.h5")
+
+No error handler available
+
+Error: Cortex received a fatal signal (unrecognized signal).
+Error Object: ()
+(cx-gui-do cx-activate-item "Error*OK")
+(cx-gui-do cx-activate-item "MenuBar*ReadSubMenu*Case & Data...")
+(cx-gui-do cx-set-file-dialog-entries "Select File" '( "&c0.14921mps-923.15k.cas.h5") "CFF Case Files (*.cas.h5 )")
+
+Error: There is no active application.
+Error Object: (%open-hdfio-library)
+(cx-gui-do cx-activate-item "Error*OK")
+/exit y
+Auto-Transcript Stop Time:  13:29:21, 11 Jul 2024 
+Total Transcript Time: 5 Minute 33 Second.
