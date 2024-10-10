@@ -1,0 +1,71 @@
+;; This journal is writen by wenming jing of Ansys China, plz contact wenming.jing@ansys.com for help
+;; read case/mesh
+/file/read-case combustor.msh.h5
+;; confirm overwrite
+/file/confirm-overwrite? yes
+;;choose steady 
+define/models/steady?
+;;activate energy equation
+define/models/energy? yes yes yes 
+;;choose rke turbulence model 
+define/models/viscous/ke-realizable? yes
+
+;;define operating conditions
+define/operating-conditions/operating-pressure 101325 gravity yes 0 -9.8 0 q
+
+;; combustion model setting
+define/models/species/partially-premixed-combustion? yes yes no yes 101325 no no 0.1 315 500 yes "jet-a<g>" 1 0 "n2" 0 0.767 "o2" 0 0.233 , , , yes 15 200 0.25 0.25 20 298 no "combustor.pdf" yes
+
+;;DPM model setting 
+define/models/dpm/interaction/coupled-calculations? yes
+define/models/dpm/interaction/dpm-iteration-interval 30
+define/models/dpm/interaction/update-dpm-sources-every-flow-iteration? no
+define/models/dpm/unsteady-tracking no
+/define/models/dpm/numerics/tracking-parameters 50000 no 5
+
+;;DPM injection setting
+define/models/dpm/injections/create-injection , yes droplet yes surface diesel-liquid fuelinlet () no no no no no no jet-a<g> no 0 0 10 0.0001 315 0.01 
+;;read injection file
+;;/file/read-injections injection-file
+
+;; inletair1 setting
+define/boundary-conditions/velocity-inlet inletair1 , , , , , 40 , , , 500 , , , , , , , , , , , , 
+;;another way inletair1 setting 
+;;define/boundary-conditions/set/velocity-inlet inletair1 () vmag no 31 temperature no 319 fmean no 0 premixc no 0 fvar no 0 q 
+;; inletair2 setting
+define/boundary-conditions/velocity-inlet inletair2 , , , , , 30 , , , 500 , , , , , , , , , , , , 
+;; fuelinlet setting
+define/boundary-conditions/velocity-inlet fuelinlet , , , , , 15 , , , 300 , , , , , , , , 1 , , , 
+;; outlet setting
+define/boundary-conditions/pressure-outlet outlet , , 0 , 800 , , , , , 5 10 , 0 , , , , , , , , , 
+;; wall setting
+define/boundary-conditions/wall mainbody:1 , , , , , , 0 , , , , , , , , , , , , , , , , 
+;;hybrid initialization
+solve/initialize/hyb-initialization
+;;report definition
+solve/report-definitions/add max-temp volume-max zone-names mainbody , field temperature report-type volume-max q
+;;add report to plot and file
+solve/report-plot/add max-temp plot-instantaneous-values? yes report-defs max-temp () q
+solve/report-files/add max-temp report-defs max-temp () write-instantaneous-values? yes file-name max-temp.out q
+;;define a surface plane
+display/surface/plane-surface midplane zx-plane 0
+;;setting up midplane velocity contour
+display/objects/create contour midplane-velocity field velocity-magnitude surfaces-list midplane , q
+;;setting up midplane velocity vector 
+display/objects/create vector midplane-v-vector field velocity-magnitude surfaces-list midplane , q
+;;setting up auto save 
+/file/auto-save/ case-frequency if-case-is-modified data-frequency 1000 retain-most-recent-files yes root-name combustor
+;;freeze specify equation
+/solve/set/equations/premixed no
+;;activate permixed equation
+/solve/set/equations/premixed no
+;; solve for 200 iteration
+solve/iterate 100
+;;activate specify equation
+/solve/set/equations/premixed yes
+;;patch temperature
+solve/patch mainbody () temperature 3000
+;;patch progress variable
+solve/patch mainbody () premixc 1 
+;; solve for 1000 iteration
+solve/iterate 1000
