@@ -1,0 +1,182 @@
+;; This journal is writen by guanyu wang, plz contact wangguanyu@lntu.edu.cn for help
+;; read case/mesh
+/file/read-case fbr-2d.msh
+
+;;scale change
+/mesh/scale 0.001 0.001
+
+;; confirm overwrite
+/file/confirm-overwrite? yes
+
+;;choose steady 
+/define/models/unsteady-2nd-order? yes
+
+;;activate energy equation
+define/models/energy? yes yes yes 
+
+;;choose rke turbulence model 
+define/models/viscous/ke-realizable? yes
+
+;;define operating conditions
+define/operating-conditions/operating-pressure 101325 gravity yes 0 -9.8 q
+
+;;define multiphase model
+/define/models/multiphase/model eulerian
+/define/models/multiphase/nop 3
+
+
+;;define material
+/define/materials/cbf f ar
+/define/materials/cbf f h2
+/define/materials/cbf f n2
+/define/materials/cbf f nh3
+/define/materials/cbf f h2o
+
+
+/define/materials/cc/ammonia-vapor , yes polynomial 3 1.37821 -0.0029 1.94897e-6 , , yes power-law three-coefficient-method 2.5934 273 1.34932 , , , , , q
+/define/materials/cc/argon , yes polynomial 3 2.38312 -0.00347 1.53776e-6 , , yes power-law three-coefficient-method 2.418894e-6 273.11 0.70761 , , , , , q
+/define/materials/cc/hydrogen , yes polynomial 3 0.13641 -0.000233538 1.24575e-7 , , yes power-law three-coefficient-method 1.64535e-7 273.11 0.69992 , , , , , q
+/define/materials/cc/nitrogen , yes polynomial 3 1.67041 -0.00243 1.07764e-6 , , yes power-law three-coefficient-method 3.93901e-7 273.11 0.67426 , , , , , q
+
+/define/materials/cc/air fe3o4 yes , 5180 yes , 1858 yes , 10 , yes 232 , , , , no q
+/define/materials/cc/air fe yes , 7800 yes , 460 yes , 50 , yes 56 , , , , no q
+/define/materials/cc/air feo yes , 5780 yes , 725 yes , 3.2 , yes 72 , , , , no q
+/define/materials/cc/air fe2o3 yes , 5240 yes , 0.77 yes , 80 , yes 162 , , , , no q
+
+/define/materials/cc/air sio2 yes , 2200 yes , 2200 , yes , 1.8e-5 yes 60 , yes , 2020 , , no q
+
+
+/define/models/species/species-transport? yes inert-mixture  fe2o3 sio2
+
+
+/define/materials/cc/inert-mixture gas yes 5 nh3 h2 n2 h2o ar , , , , , yes , 1.7894e-5 , , no
+/define/materials/cc/inert-mixture solid yes 4 fe feo fe3o4 fe2o3 , , yes volume-weighted-mixing-law , , , , , yes
+
+
+define/phases/set-domain-properties/change-phases-names? quartz iron-ore gas q
+
+/define/phases/set-domain-properties/phase-domains/gas/material mixture yes gas
+/define/phases/set-domain-properties/phase-domains/iron-ore/material mixture yes solid
+
+/define/phases/set-domain-properties/phase-domains/iron-ore/granular yes
+/define/phases/set-domain-properties/phase-domains/iron-ore/diameter , 0.00035
+/define/phases/set-domain-properties/phase-domains/iron-ore/granular-properties/viscosity syamlal-obrien
+define/phases/set-domain-properties/phase-domains/iron-ore/granular-properties/bulk-viscosity lun-et-al
+define/phases/set-domain-properties/phase-domains/iron-ore/granular-properties/solids-pressure lun-et-al
+define/phases/set-domain-properties/phase-domains/iron-ore/granular-properties/friction-viscosity schaeffer
+define/phases/set-domain-properties/phase-domains/iron-ore/granular-properties/frictional-pressure based-ktgf
+
+/define/phases/set-domain-properties/phase-domains/quartz/granular yes
+/define/phases/set-domain-properties/phase-domains/quartz/diameter , 0.00035
+/define/phases/set-domain-properties/phase-domains/quartz/granular-properties/viscosity syamlal-obrien
+define/phases/set-domain-properties/phase-domains/quartz/granular-properties/bulk-viscosity lun-et-al
+define/phases/set-domain-properties/phase-domains/quartz/granular-properties/solids-pressure lun-et-al
+define/phases/set-domain-properties/phase-domains/quartz/granular-properties/friction-viscosity schaeffer
+define/phases/set-domain-properties/phase-domains/quartz/granular-properties/frictional-pressure based-ktgf
+
+/define/phases/set-domain-properties/interaction-domain/heat-mass-reactions/heat-coeff yes gunn gunn ,
+
+/define/phases/set-domain-properties/interaction-domain/heat-mass-reactions/reactions 7 
+, 1 2 nh3 2 2 2 n2 1 2 h2 3 "arrhenius-rate" 18.48 138000 0 1 2 773 ,
+, 2 2 nh3 2 3 fe2o3 9 3 2 n2 1 2 h2o 3 3 fe3o4 6 "arrhenius-rate" 1.95 84160 , , , 773 ,
+, 2 2 nh3 2 3 fe3o4 3 3 2 h2 1 2 h2o 3 3 feo 9 "arrhenius-rate" 171.31 132060 , , , 773 , 
+, 2 2 nh3 2 3 feo 3 3 2 h2 1 2 h2o 3 3 fe 3 "arrhenius-rate" 106.42 130750 , , , 773 ,
+, 2 2 h2 1 3 fe2o3 3 2 2 h2o 1 3 fe3o4 2 "arrhenius-rate" 6.92 63300 , , , 773 ,
+, 2 2 h2 1 3 fe3o4 1 2 2 h2o 1 3 feo 3 "arrhenius-rate" 8.84 70800 , , , 773 ,
+, 2 2 h2 1 3 feo 1 2 2 h2o 1 3 fe 1 "arrhenius-rate" 241 91700 , , , 773 ,
+
+/define/boundary-conditions/set/velocity-inlet , , gas species-in-mole-fractions?  yes vmag , 0.15972 mf , , , 0.1 , , , , q
+
+/define/boundary-conditions/set/wall , , mixture thermal-bc yes temperature temperature no 1223.15 q
+
+solve/set/set-all-species-together no yes
+
+/solve/set/under-relaxation/gas/species-0 0.6
+
+/solve/set/under-relaxation/mixture/species-0 0.6
+
+/solve/set/under-relaxation/iron-ore/species-0 0.6
+
+/solve/set/under-relaxation/quartz/species-0 0.6
+
+
+/define/materials/delete carbon-dioxide
+/define/materials/delete air
+
+/solve/cell-registers/add , q
+
+/solve/cell-registers/edit , type hexahedron inside? , max-point 0.032 0.03 min-point 0 0 q
+
+/solve/initialize/set-defaults/iron-ore/temperature 1223.15 q
+
+/solve/initialize/set-defaults/quartz/temperature 1223.15 q
+
+/solve/initialize/set-defaults/gas/temperature 1223.15 q
+
+
+/solve/initialize/initialize-flow yes
+
+/solve/patch iron-ore , , , mp 2.98186785e-4
+
+/solve/patch quartz , , , mp 0.014204534
+
+/file/auto-save/append-file-name-with/flow-time 2
+
+/file/auto-save/case-frequency  each-time q
+
+/file/auto-save/data-frequency 1000
+
+/file/auto-save/root ,
+
+
+
+/solve/report-definitions/add io-mass volume-mass phase  "iron-ore" zone-names fluid , q
+
+/solve/report-plots/add io-mass plot-instantaneous-values?  yes  y-label mass report-defs io-mass , q
+
+/solve/report-files/add io-mass report-defs io-mass , write-instantaneous-values? yes file-name ".\io-mass.out" q
+
+
+
+/solve/report-definitions/add fe2o3-mass volume-integral field iron-ore mass-concentration-mixture-fe2o3 zone-names fluid , q
+
+/solve/report-plots/add fe2o3-mass plot-instantaneous-values?  yes  y-label mass report-defs fe2o3-mass , q
+
+/solve/report-files/add fe2o3-mass report-defs fe2o3-mass , write-instantaneous-values? yes file-name ".\fe2o3-mass.out" q
+
+
+/solve/report-definitions/add fe3o4-mass volume-integral field iron-ore mass-concentration-mixture-fe3o4 zone-names fluid , q
+
+/solve/report-plots/add fe3o4-mass plot-instantaneous-values?  yes  y-label mass report-defs fe3o4-mass , q
+
+/solve/report-files/add fe3o4-mass report-defs fe3o4-mass , write-instantaneous-values? yes file-name ".\fe3o4-mass.out" q
+
+
+/solve/report-definitions/add feo-mass volume-integral field iron-ore mass-concentration-mixture-feo zone-names fluid , q
+
+/solve/report-plots/add feo-mass plot-instantaneous-values?  yes  y-label mass report-defs feo-mass , q
+
+/solve/report-files/add feo-mass report-defs feo-mass , write-instantaneous-values? yes file-name ".\feo-mass.out" q
+
+
+/solve/report-definitions/add fe-mass volume-integral field iron-ore mass-concentration-mixture-fe zone-names fluid , q
+
+/solve/report-plots/add fe-mass plot-instantaneous-values?  yes  y-label mass report-defs fe-mass , q
+
+/solve/report-files/add fe-mass report-defs fe-mass , write-instantaneous-values? yes file-name ".\fe-mass.out" q
+
+
+
+
+
+
+/display/objects/create contour vf-io field iron-ore vof surfaces-list 0 1 2 3 , contour-lines? yes q
+
+
+/display/objects/create contour vf-quartz field quartz vof surfaces-list 0 1 2 3 , contour-lines? yes q
+
+
+
+/solve/set/transient-controls/ time-step-size 0.001 max-iterations-per-time-step , number-of-time-steps 1800000
+
+/solve/dual-time-iterate , ,
